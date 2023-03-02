@@ -1,0 +1,10 @@
+---
+name: Build something
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    runs-on: [ self-hosted ]
+    steps:
+      - name: 1st step
+        run: echo "Hello from the 1st step"
