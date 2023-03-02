@@ -1,10 +1,23 @@
 ---
 name: Build something
-on: [ push, pull_request ]
+"on": [push, pull_request]
 
 jobs:
   build:
-    runs-on: [ self-hosted ]
+    runs-on: [self-hosted]
     steps:
       - name: 1st step
         run: echo "Hello from the 1st step"
+      - name: 2st step
+        env:
+          NON_SECRET: "I am not a secret"
+          SECRET1: ${{ secrets.TESTING_SECRET }}
+        run: |
+          echo "Hello from the 2st step"
+          echo "NON_SECRET: $NON_SECRET"
+          echo "SECRET1: $SECRET1"
+          if [ -z "$SECRET1" ]; then
+            echo "SECRET1 is empty"
+          else
+            echo "SECRET1 is NOT empty"
+          fi
