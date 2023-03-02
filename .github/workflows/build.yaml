@@ -1,9 +1,11 @@
 ---
-name: Build something
-"on": [push, pull_request]
-
+name: Workflow 1
+"on": 
+  push:
+  pull_request:
+      types: [opened, reopened]
 jobs:
-  build:
+  workflow1_job1:
     runs-on: [self-hosted]
     steps:
       - name: 1st step
@@ -21,7 +23,16 @@ jobs:
           else
             echo "SECRET1 is NOT empty"
           fi
-      - name: 3rd step
+  workflow1_job2:
+    runs-on: [self-hosted]
+    steps:
+      - name: Successful step 1
         run: |
-          echo "Hello from the 3rd step"
+          echo "Hello from the step 1"
+      - name: Failed step 2
+        run: |
+          echo "Hello from the step 2"
           exit 2
+      - name: Successful step 3
+        run: |
+          echo "Hello from the step 3"
