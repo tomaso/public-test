@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: 1st step
         run: echo "Hello from the 1st step"
-      - name: 2st step
+      - name: 2nd step
         env:
           NON_SECRET: "I am not a secret"
           SECRET1: ${{ secrets.TESTING_SECRET }}
@@ -21,3 +21,7 @@ jobs:
           else
             echo "SECRET1 is NOT empty"
           fi
+      - name: 3rd step
+        run: |
+          echo "Hello from the 3rd step"
+          exit 2
