@@ -20,6 +20,7 @@ jobs:
           echo "SECRET1: $SECRET1"
           if [ -z "$SECRET1" ]; then
             echo "SECRET1 is empty"
+            exit 1
           else
             echo "SECRET1 is NOT empty"
           fi
@@ -30,6 +31,7 @@ jobs:
         run: |
           echo "Hello from the step 1"
       - name: Failed step 2
+        continue-on-error: true
         run: |
           echo "Hello from the step 2"
           exit 2
