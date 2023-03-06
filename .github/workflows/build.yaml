@@ -5,29 +5,67 @@ name: Workflow 1
   pull_request:
       types: [opened, reopened]
 jobs:
+    oidc_debug_test:
+      permissions:
+        contents: read
+        id-token: write
+      runs-on: [self-hosted]
+      name: A test of the oidc debugger
+      steps:
+        - name: Checkout actions-oidc-debugger
+          uses: actions/checkout@v3
+          with:
+            repository: github/actions-oidc-debugger
+            ref: main
+            token: ${{ secrets.GITHUB_TOKEN }}
+            path: ./.github/actions/actions-oidc-debugger
+        - name: Debug OIDC Claims
+          uses: ./.github/actions/actions-oidc-debugger
+          with:
+            audience: 'https://github.com/github'
     retrieve-secret:
         runs-on: [self-hosted]
         permissions:
             contents: read
             id-token: write
         steps:
-            - name: Import Secrets
-              id: import-secrets
+            - name: Import Secrets 1
+              continue-on-error: true
+              id: import-secrets1
               uses: hashicorp/vault-action@v2
               with:
                 url: https://rpi1.kouba.xyz:8200
-                token: ${{ secrets.VAULT_TOKEN }}
+                role: dev-role
+                method: jwt
                 secrets: |
-                    cubbyhole/all test-secret  | SECRET1
+                    kv/test secret  | SECRET1
+            - name: Import Secrets 2
+              continue-on-error: true
+              id: import-secrets2
+              uses: hashicorp/vault-action@v2
+              with:
+                url: https://rpi1.kouba.xyz:8200
+                role: dev-role
+                method: jwt
+                secrets: |
+                    kv/only-one-repo secret  | SECRET2
             - name: Use secrets
               run: |
-                SECRET1="${{ steps.import-secrets.outputs.SECRET1 }}"
+                SECRET1="${{ steps.import-secrets1.outputs.SECRET1 }}"
                 if [ -z "$SECRET1" ]; then
                   echo "SECRET1 is empty"
                 else
                   echo "SECRET1 is NOT empty"
                   echo "$SECRET1" | base64
                   echo "$SECRET1" | wc -w
+                fi
+                SECRET2="${{ steps.import-secrets2.outputs.SECRET2 }}"
+                if [ -z "$SECRET2" ]; then
+                  echo "SECRET2 is empty"
+                else
+                  echo "SECRET2 is NOT empty"
+                  echo "$SECRET2" | base64
+                  echo "$SECRET2" | wc -w
                 fi
 #with:
 #  url: https://vault.mycompany.com:8200
