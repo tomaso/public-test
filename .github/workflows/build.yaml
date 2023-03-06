@@ -5,36 +5,33 @@ name: Workflow 1
   pull_request:
       types: [opened, reopened]
 jobs:
-  workflow1_job1:
-    runs-on: [self-hosted]
-    steps:
-      - name: 1st step
-        run: echo "Hello from the 1st step"
-      - name: 2nd step
-        env:
-          NON_SECRET: "I am not a secret"
-          SECRET1: ${{ secrets.TESTING_SECRET }}
-        run: |
-          echo "Hello from the 2st step"
-          echo "NON_SECRET: $NON_SECRET"
-          echo "SECRET1: $SECRET1"
-          if [ -z "$SECRET1" ]; then
-            echo "SECRET1 is empty"
-            exit 1
-          else
-            echo "SECRET1 is NOT empty"
-          fi
-  workflow1_job2:
-    runs-on: [self-hosted]
-    steps:
-      - name: Successful step 1
-        run: |
-          echo "Hello from the step 1"
-      - name: Failed step 2
-        continue-on-error: true
-        run: |
-          echo "Hello from the step 2"
-          exit 2
-      - name: Successful step 3
-        run: |
-          echo "Hello from the step 3"
+    retrieve-secret:
+        runs-on: [self-hosted]
+        permissions:
+            contents: read
+            id-token: write
+        steps:
+            - name: Import Secrets
+              id: import-secrets
+              uses: hashicorp/vault-action@v2
+              with:
+                url: https://rpi1.kouba.xyz:8200
+                token: ${{ secrets.VAULT_TOKEN }}
+                secrets: |
+                    cubbyhole/all test-secret  | SECRET1
+            - name: Use secrets
+              run: |
+                SECRET1="${{ steps.import-secrets.outputs.SECRET1 }}"
+                if [ -z "$SECRET1" ]; then
+                  echo "SECRET1 is empty"
+                else
+                  echo "SECRET1 is NOT empty"
+                  echo "$SECRET1" | base64
+                  echo "$SECRET1" | wc -w
+                fi
+#with:
+#  url: https://vault.mycompany.com:8200
+#  caCertificate: ${{ secrets.VAULT_CA_CERT }}
+#  role: <Vault JWT Auth Role Name>
+#  method: jwt
+#  jwtGithubAudience: sigstore # set the GitHub token's aud claim
