@@ -35,7 +35,7 @@ jobs:
               uses: hashicorp/vault-action@v2
               with:
                 url: https://rpi1.kouba.xyz:8200
-                role: dev-role
+                role: big-role
                 method: jwt
                 secrets: |
                     kv/test secret  | SECRET1
@@ -45,7 +45,7 @@ jobs:
               uses: hashicorp/vault-action@v2
               with:
                 url: https://rpi1.kouba.xyz:8200
-                role: dev-role
+                role: big-role
                 method: jwt
                 secrets: |
                     kv/only-one-repo secret  | SECRET2
