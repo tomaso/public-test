@@ -28,7 +28,7 @@ jobs:
           with:
             url: https://vault.ord1.infra-dev.intgdc.com
             role: tok-test
-            token: ${{ secrets.VAULT_TOKEN }}
+            method: jwt
             secrets: |
                 secret/data/tok/test secret  | SECRET1
         - name: Use secrets
