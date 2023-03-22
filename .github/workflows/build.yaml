@@ -11,6 +11,17 @@ jobs:
           contents: read
           id-token: write
       steps:
+        - name: Checkout actions-oidc-debugger
+          uses: actions/checkout@v3
+          with:
+            repository: github/actions-oidc-debugger
+            ref: main
+            token: ${{ secrets.GITHUB_TOKEN }}
+            path: ./.github/actions/actions-oidc-debugger
+        - name: Debug OIDC Claims
+          uses: ./.github/actions/actions-oidc-debugger
+          with:
+            audience: 'https://github.com/github'
           - name: Import Secrets 1
             id: import-secrets1
             uses: hashicorp/vault-action@v2
