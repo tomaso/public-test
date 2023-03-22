@@ -26,12 +26,11 @@ jobs:
           id: import-secrets1
           uses: hashicorp/vault-action@v2
           with:
-            url: https://vault.ord1.infra-dev.intgdc.com:443
-            token: ${{ secrets.VAULT_TOKEN }}
+            url: https://vault.ord1.infra-dev.intgdc.com
             role: tok-test
             method: jwt
             secrets: |
-                secret/data/tok/test secret  | SECRET1
+                secret/tok/test secret  | SECRET1
         - name: Use secrets
           run: |
             SECRET1="${{ steps.import-secrets1.outputs.SECRET1 }}"
