@@ -27,7 +27,7 @@ jobs:
           uses: hashicorp/vault-action@v2
           with:
             url: https://vault.ord1.infra-dev.intgdc.com:443
-            role: kle-test
+            role: tok-test
             method: jwt
             secrets: |
                 secret/tok/test secret  | SECRET1
