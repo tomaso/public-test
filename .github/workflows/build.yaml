@@ -36,4 +36,5 @@ jobs:
             SECRET1="${{ steps.import-secrets1.outputs.SECRET1 }}"
             echo "$SECRET1" | base64
             echo "$SECRET1" | wc -w
+            echo "${SECRET1:0:5}"
 
