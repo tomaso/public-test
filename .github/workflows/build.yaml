@@ -19,11 +19,13 @@ jobs:
             token: ${{ secrets.GITHUB_TOKEN }}
             path: ./.github/actions/actions-oidc-debugger
         - name: Debug OIDC Claims
+          continue-on-error: true
           uses: ./.github/actions/actions-oidc-debugger
           with:
             audience: 'https://github.com/github'
         - name: Import Secrets 1
           id: import-secrets1
+          continue-on-error: true
           uses: hashicorp/vault-action@v2
           with:
             url: https://vault.ord1.infra-dev.intgdc.com
@@ -33,9 +35,28 @@ jobs:
             secrets: |
                 secret/data/tok/test secret  | SECRET1
         - name: Use secrets
+          continue-on-error: true
           run: |
             SECRET1="${{ steps.import-secrets1.outputs.SECRET1 }}"
             echo "$SECRET1" | base64
             echo "$SECRET1" | wc -w
             echo "${SECRET1:0:5}"
+        - name: Import Secrets 2
+          id: import-secrets2
+          continue-on-error: true
+          uses: hashicorp/vault-action@v2
+          with:
+            url: https://vault.ord1.infra-dev.intgdc.com
+            role: tok-test
+            method: jwt
+            path: github
+            secrets: |
+                secret/data/tok/test-pre-merge secret  | SECRET2
+        - name: Use secrets
+          continue-on-error: true
+          run: |
+            SECRET2="${{ steps.import-secrets2.outputs.SECRET2 }}"
+            echo "$SECRET2" | base64
+            echo "$SECRET2" | wc -w
+            echo "${SECRET2:0:5}"
 
