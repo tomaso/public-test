@@ -29,6 +29,7 @@ jobs:
             url: https://vault.ord1.infra-dev.intgdc.com
             role: tok-test
             method: jwt
+            path: github
             secrets: |
                 secret/data/tok/test secret  | SECRET1
         - name: Use secrets
