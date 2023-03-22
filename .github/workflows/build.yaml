@@ -22,18 +22,18 @@ jobs:
           uses: ./.github/actions/actions-oidc-debugger
           with:
             audience: 'https://github.com/github'
-          - name: Import Secrets 1
-            id: import-secrets1
-            uses: hashicorp/vault-action@v2
-            with:
-              url: https://vault.ord1.infra-dev.intgdc.com:443
-              role: kle-test
-              method: jwt
-              secrets: |
-                  secret/tok/test secret  | SECRET1
-          - name: Use secrets
-            run: |
-              SECRET1="${{ steps.import-secrets1.outputs.SECRET1 }}"
-              echo "$SECRET1" | base64
-              echo "$SECRET1" | wc -w
+        - name: Import Secrets 1
+          id: import-secrets1
+          uses: hashicorp/vault-action@v2
+          with:
+            url: https://vault.ord1.infra-dev.intgdc.com:443
+            role: kle-test
+            method: jwt
+            secrets: |
+                secret/tok/test secret  | SECRET1
+        - name: Use secrets
+          run: |
+            SECRET1="${{ steps.import-secrets1.outputs.SECRET1 }}"
+            echo "$SECRET1" | base64
+            echo "$SECRET1" | wc -w
 
