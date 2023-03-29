@@ -1,0 +1,16 @@
+---
+name: Block on variable
+"on":
+  push:
+    branches:
+      - master
+
+jobs:
+  block-if-var:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo the var
+        env:
+          TITLE: ${{ github.event.head_commit.message }}
+        run: | 
+          echo "Hello the TITLE is"
