@@ -12,4 +12,4 @@ jobs:
     steps:
       - name: Echo the var
         run: | 
-          echo "Hello the VAR is ${{ env.VAR }}"
+          echo "Hello the VAR is ${{ vars.VAR }}"
