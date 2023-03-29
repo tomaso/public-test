@@ -3,7 +3,7 @@ name: Block on variable
 "on":
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 jobs:
