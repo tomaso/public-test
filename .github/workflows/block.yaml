@@ -4,13 +4,12 @@ name: Block on variable
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   block-if-var:
     runs-on: ubuntu-latest
     steps:
       - name: Echo the var
-        env:
-          TITLE: ${{ github.event.head_commit.message }}
         run: | 
-          echo "Hello the TITLE is"
+          echo "Hello the VAR is ${{ env.VAR }}"
