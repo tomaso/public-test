@@ -5,12 +5,12 @@ name: Approve PR workflow
 
 jobs:
   input-test:
-    inputs:
-      myVar:
-        description: 'myVar'
-        required: true
     runs-on: ubuntu-latest
     steps:
       - name: Echo the var
-        run: | 
+        inputs:
+          myVar:
+            description: 'myVar'
+            required: true
+        run: |
           echo "Hello myVar is ${{ inputs.myVar }}"
