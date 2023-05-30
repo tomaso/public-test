@@ -12,4 +12,4 @@ jobs:
     steps:
       - name: Echo the var
         run: |
-          echo "Hello my secret is ${SECRET1:3}"
+          echo "Hello my secret is ${SECRET:1:3}"
