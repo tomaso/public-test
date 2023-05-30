@@ -6,7 +6,10 @@ name: Approve PR workflow
 jobs:
   input-test:
     runs-on: ubuntu-latest
+    environment: Netlify preview
+    env:
+      SECRET: ${{ secrets.TEST_ENV_SECRET }}
     steps:
       - name: Echo the var
         run: |
-          echo "Hello myVar is ${{ env.MYVAR }}"
+          echo "Hello my secret is ${SECRET1:3}"
