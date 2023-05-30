@@ -8,9 +8,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo the var
-        inputs:
-          myVar:
-            description: 'myVar'
-            required: true
         run: |
-          echo "Hello myVar is ${{ inputs.myVar }}"
+          echo "Hello myVar is ${{ env.MYVAR }}"
