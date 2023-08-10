@@ -1,0 +1,10 @@
+---
+name: Test act interaction with setup-python
+"on":
+  pull_request:
+
+jobs:
+  act-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v4
